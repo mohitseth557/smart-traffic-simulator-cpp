@@ -25,6 +25,13 @@ constexpr float YELLOW_TIME    = 3.0f;
 constexpr float SPAWN_INTERVAL = 1.8f;
 constexpr int   MAX_PER_DIR    = 12;
 
+// ── Ambulance constants ──────────────────────────────
+constexpr float AMBULANCE_SPAWN_INTERVAL = 15.0f;
+constexpr float AMBULANCE_SPEED          = 130.0f;
+
+// ── Turn arc radius (matches half-road for smooth arcs)
+constexpr float TURN_RADIUS    = HALF_ROAD;
+
 // ─────────────────────────────────────────────────────
 //  Colour palette (matches HTML canvas version)
 // ─────────────────────────────────────────────────────
@@ -44,6 +51,12 @@ inline const Color COL_CARD      = {28,  32,  48,  255};
 inline const Color COL_TEXT      = {232,234, 240,  255};
 inline const Color COL_MUTED     = {107,114, 128,  255};
 
+// ── Ambulance colours ────────────────────────────────
+inline const Color COL_AMBULANCE      = {240, 240, 245, 255};
+inline const Color COL_AMBULANCE_CROSS= {220,  40,  40, 255};
+inline const Color COL_SIREN_RED      = {255,  30,  30, 255};
+inline const Color COL_SIREN_BLUE     = { 30,  80, 255, 255};
+
 inline const Color CAR_COLORS[] = {
     {55, 138,221,255},
     {216, 90, 48,255},
@@ -60,6 +73,11 @@ constexpr int NUM_CAR_COLORS = 8;
 //  Direction enum
 // ─────────────────────────────────────────────────────
 enum Dir { NORTH=0, SOUTH=1, EAST=2, WEST=3 };
+
+// ─────────────────────────────────────────────────────
+//  Turn direction enum
+// ─────────────────────────────────────────────────────
+enum TurnDir { STRAIGHT=0, TURN_LEFT=1, TURN_RIGHT=2 };
 
 // ─────────────────────────────────────────────────────
 //  Per-step stats snapshot

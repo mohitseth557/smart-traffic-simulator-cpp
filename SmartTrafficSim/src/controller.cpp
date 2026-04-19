@@ -4,13 +4,45 @@
 SignalController::SignalController(bool smart) : smart_(smart) {}
 
 void SignalController::reset() {
-    phase_     = "NS";
-    yellow_    = false;
-    timer_     = 0.0f;
-    green_dur_ = BASE_GREEN;
+    phase_         = "NS";
+    yellow_        = false;
+    timer_         = 0.0f;
+    green_dur_     = BASE_GREEN;
+    override_      = false;
+    overridePhase_ = "";
 }
 
+// ─────────────────────────────────────────────────────
+//  Ambulance override — force phase green instantly
+// ─────────────────────────────────────────────────────
+void SignalController::requestOverride(Dir ambulanceDir) {
+    bool ns = (ambulanceDir == NORTH || ambulanceDir == SOUTH);
+    overridePhase_ = ns ? "NS" : "EW";
+    phase_         = overridePhase_;
+    yellow_        = false;
+    timer_         = 0.0f;
+    green_dur_     = MAX_GREEN;  // long green while ambulance passes
+    override_      = true;
+}
+
+void SignalController::clearOverride() {
+    override_      = false;
+    overridePhase_ = "";
+    timer_         = 0.0f;
+    green_dur_     = BASE_GREEN;
+    // Normal cycling resumes from the current phase
+}
+
+// ─────────────────────────────────────────────────────
+//  Update — skip phase transitions during override
+// ─────────────────────────────────────────────────────
 void SignalController::update(float dt, int ns_q, int ew_q) {
+    if (override_) {
+        // Keep the overridden phase green — don't advance timer
+        timer_ = 0.0f;
+        return;
+    }
+
     timer_ += dt;
     if (timer_ < green_dur_) return;
 

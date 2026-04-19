@@ -8,6 +8,7 @@
 //
 //  Smart mode:  green duration adapts to queue lengths.
 //  Fixed mode:  constant BASE_GREEN per phase.
+//  Override:    ambulance forces a specific phase green.
 // ─────────────────────────────────────────────────────
 class SignalController {
 public:
@@ -21,6 +22,11 @@ public:
 
     // True if currently in green (not yellow/red) for NS or EW
     bool  canGo(Dir d) const;
+
+    // ── Ambulance override ───────────────────────────
+    void  requestOverride(Dir ambulanceDir);
+    void  clearOverride();
+    bool  isOverride() const { return override_; }
 
     // Accessors
     const std::string& phase()     const { return phase_; }
@@ -40,4 +46,8 @@ private:
     bool        yellow_    = false;
     float       timer_     = 0.0f;
     float       green_dur_ = BASE_GREEN;
+
+    // Override state
+    bool        override_      = false;
+    std::string overridePhase_ = "";
 };
